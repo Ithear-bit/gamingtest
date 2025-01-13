@@ -1,0 +1,35 @@
+body {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #fff;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style-type: none; /* Убираем маркеры списка */
+    padding: 0; /* Убираем отступы */
+    display: flex; /* Используем flexbox для горизонтального расположения */
+}
+
+nav ul li {
+    margin-right: 20px; /* Отступ между пунктами меню */
+}
+
+nav ul li a {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: #333; /* Цвет текста */
+}
+
+nav ul li a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+main {
+    padding: 20px;
+}
