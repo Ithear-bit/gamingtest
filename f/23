@@ -24,3 +24,41 @@ for d1 in range(10):  # для первого '?'
                 max_number = max(max_number, num)
 
 print(count, max_number)
+#include <iostream>
+#include <string>
+
+bool matches_mask(const std::string& num_str) {
+    // Проверяем, соответствует ли строка маске 4?8?15?16?23
+    if (num_str.length() != 14) {
+        return false;
+    }
+    return (num_str[0] == '4' &&
+            num_str[2] == '8' &&
+            num_str[5] == '1' &&
+            num_str[7] == '6' &&
+            num_str[10] == '2' &&
+            num_str[11] == '3');
+}
+
+int main() {
+    int count = 0;
+    long long max_number = 0;
+
+    // Перебираем все возможные комбинации для '?'
+    for (int d1 = 0; d1 < 10; ++d1) {  // для первого '?'
+        for (int d2 = 0; d2 < 10; ++d2) {  // для второго '?'
+            for (int d3 = 0; d3 < 10; ++d3) {  // для третьего '?'
+                // Формируем число
+                std::string num_str = "4" + std::to_string(d1) + "8" + std::to_string(d2) + "15" + std::to_string(d3) + "16" + "23";
+                long long num = std::stoll(num_str);
+                if (num <= 1000000000000LL && num % 123 == 42 && matches_mask(num_str)) {
+                    count++;
+                    max_number = std::max(max_number, num);
+                }
+            }
+        }
+    }
+
+    std::cout << count << " " << max_number << std::endl;
+    return 0;
+}
