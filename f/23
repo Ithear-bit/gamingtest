@@ -1,0 +1,26 @@
+def matches_mask(num_str):
+    # Проверяем, соответствует ли строка маске 4?8?15?16?23
+    if len(num_str) != 14:
+        return False
+    return (num_str[0] == '4' and
+            num_str[2] == '8' and
+            num_str[5] == '1' and
+            num_str[7] == '6' and
+            num_str[10] == '2' and
+            num_str[11] == '3')
+
+count = 0
+max_number = 0
+
+# Перебираем все возможные комбинации для '?'
+for d1 in range(10):  # для первого '?'
+    for d2 in range(10):  # для второго '?'
+        for d3 in range(10):  # для третьего '?'
+            # Формируем число
+            num_str = f"4{d1}8{d2}15{d3}16{23}"
+            num = int(num_str)
+            if num <= 10**12 and num % 123 == 42 and matches_mask(num_str):
+                count += 1
+                max_number = max(max_number, num)
+
+print(count, max_number)
