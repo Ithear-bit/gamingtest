@@ -1,0 +1,114 @@
+#include <codecvt>
+#include <iostream>
+#include <locale>
+#include <cstdlib>
+#include <ctime>
+#include <limits>
+#define Red "\033[0;31m"
+#define Green "\033[0;32m"
+using namespace std;
+
+float MANI(float& balanc) {
+    locale::global(std::locale("ru_RU.UTF-8"));
+    float poter = 0.f;
+    float prixod = 0.f;
+    cout << "пожалуйста введите баланс: ";
+    int seed = time(NULL);
+    srand(seed);
+    int start = 1;
+    int end = 20;
+    int x = rand() % (end - start + 1) + start;
+    cout << x << endl;
+    int b = 0;
+
+    while (true) {
+        cin >> b;
+        if (cin.fail()) { 
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << Red << "Ошибка: введено недопустимое значение. Пожалуйста, введите число." << endl;
+            cout << x << endl; 
+            continue; 
+        }
+        break; 
+    }
+
+    if (x == b) {
+        prixod = balanc += 100;
+        cout << "Вы выйграли: " << prixod << endl;
+        balanc = prixod; 
+    } else {
+        poter = balanc -= 30;
+        cout << "вы потеряли: " << poter << endl;
+        balanc -= poter; 
+    }
+    return balanc;
+}
+
+float MAN(float& balanc) {
+    locale::global(std::locale("ru_RU.UTF-8"));
+    float poter = 0.f;
+    float prixod = 0.f;
+    int seed = time(NULL);
+    srand(seed);
+    int start = 1;
+    int end = 10;
+    int x = rand() % (end - start + 1) + start;
+    cout << x << endl;
+    int b = 0;
+
+    while (true) {
+        cin >> b;
+        if (cin.fail()) { 
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            cout << Red << "Ошибка: введено недопустимое значение. Пожалуйста, введите число." << endl;
+            cout << x << endl;
+            continue;
+        }
+        break; 
+    }
+
+    if (x == b) {
+        prixod = balanc += 100;
+        cout << "Вы выйграли: " << prixod << endl;
+        balanc += prixod; 
+    } else {
+        poter = balanc -= 30;
+        cout << "вы потеряли: " << poter << endl;
+        balanc -= poter; 
+    }
+    return balanc;
+}
+
+int main()
+{
+    locale::global(std::locale("ru_RU.UTF-8"));
+    float balanc = 01.f;
+    while (balanc > 0)
+    {
+        int h = 0;
+        cout << "Введите число рядом с желаемым уровнем сложности" << endl;
+        cout << "1 - изи пизи" << endl;
+        cout << "2 - блин ну ваще хз" << endl;
+
+        while (true) {
+            cin >> h;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << Red << "Ошибка: введено недопустимое значение. Пожалуйста, введите число." << endl;
+                continue; 
+            }
+            break; 
+        }
+
+        if (h == 1) {
+            cout << "Угадай циферку" << endl;
+            MAN(balanc);
+        } else {
+            cout << "Угадай циферку или умри" << endl;
+            MANI(balanc);
+        }
+    }
+}
