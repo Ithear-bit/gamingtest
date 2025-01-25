@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+using namespace std;
+struct Resistor {
+int node1;
+int node2;
+double resistance;
+};
+class Circuit {
+public:
+Circuit(int numNodes) : numNodes(numNodes) {
+resistors.clear();
+voltages.resize(numNodes, 0.0);
+}
+void addResistor(int node1, int node2, double resistance) {
+resistors.push_back({node1, node2, resistance});
+}
+void solve() {
+voltages[0] = 0.0;
+for (int i = 1; i < numNodes; ++i) {
+double totalConductance = 0.0;
+double currentVoltage = 0.0;
+for (const auto& resistor : resistors) {
+if (resistor.node1 == i) {
+totalConductance += 1.0 / resistor.resistance;
+currentVoltage += voltages[resistor.node2] / resistor.resistance;
+} else if (resistor.node2 == i) {
+totalConductance += 1.0 / resistor.resistance;
+currentVoltage += voltages[resistor.node1] / resistor.resistance;
+}
+}
+if (totalConductance > 0) {
+voltages[i] = currentVoltage / totalConductance;
+}
+}
+cout << "Voltages at nodes:\n";
+for (int i = 0; i < voltages.size(); ++i) {
+cout << "Node " << i << ": " <<fixed << setprecision(2) << voltages[i] << " V\n";
+}
+}
+private:
+int numNodes;
+vector<Resistor> resistors;
+vector<double> voltages;
+};
+int main() {
+Circuit circuit(4);
+circuit.addResistor(0, 1, 1000);
+circuit.addResistor(1, 2, 2000);
+circuit.addResistor(2, 3, 3000);
+circuit.solve();
+return 0;
+}
