@@ -5,6 +5,21 @@ screen = Screen()
 screen.title("Задача с черепахой")
 screen.bgcolor("white")
 
+# Функция для рисования клетчатого фона
+def draw_grid(size, step):
+    penup()
+    for x in range(-size, size + 1, step):
+        goto(x, -size)
+        pendown()
+        goto(x, size)
+        penup()
+    for y in range(-size, size + 1, step):
+        goto(-size, y)
+        pendown()
+        goto(size, y)
+        penup()
+    goto(0, 0)  # Возвращаем черепаху в центр
+
 # Создание черепахи
 shape("turtle")
 color("blue")
@@ -20,18 +35,14 @@ def draw_square(size):
 def draw_circle(radius):
     circle(radius)
 
-# Функция для рисования линии к заданной точке
-def draw_line_to_point(x, y):
-    penup()           # Поднимаем перо, чтобы не рисовать линию
-    goto(x, y)       # Перемещаем черепаху к заданной точке
-    pendown()         # Опускаем перо, чтобы начать рисовать
-    forward(50)      # Рисуем линию длиной 50 единиц
-
 # Основная программа
 if __name__ == "__main__":
-    draw_square(100)  # Рисуем квадрат со стороной 100
-    draw_circle(50)   # Рисуем круг с радиусом 50
-    draw_line_to_point(200, 200)  # Рисуем линию к точке (200, 200)
+    draw_grid(300, 20)  # Рисуем клетчатый фон размером 300 с шагом 20
+    draw_square(100)     # Рисуем квадрат со стороной 100
+    penup()
+    goto(150, 0)         # Перемещаем черепаху
+    pendown()
+    draw_circle(50)      # Рисуем круг с радиусом 50
 
     # Завершение работы по клику
     screen.exitonclick()
