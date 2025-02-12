@@ -1,0 +1,36 @@
+import turtle
+
+# Настройка экрана
+screen = turtle.Screen()
+screen.title("Пример программы с черепахой")
+screen.bgcolor("white")
+
+# Создание черепахи
+t = turtle.Turtle()
+t.shape("turtle")
+t.color("blue")
+t.speed(1)
+
+# Функция для рисования квадрата
+def draw_square(size):
+    for _ in range(4):
+        t.forward(size)
+        t.right(90)
+
+# Функция для рисования круга
+def draw_circle(radius):
+    t.circle(radius)
+
+# Основная программа
+def main():
+    draw_square(100)  # Рисуем квадрат
+    t.penup()         # Поднимаем перо
+    t.goto(150, 0)    # Перемещаем черепаху
+    t.pendown()       # Опускаем перо
+    draw_circle(50)   # Рисуем круг
+
+    # Завершение работы по клику
+    screen.exitonclick()
+
+if __name__ == "__main__":
+    main()
