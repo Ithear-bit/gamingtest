@@ -1,48 +1,19 @@
-from turtle import *
+#include <iostream>
+#include <string>
 
-# Настройка экрана
-screen = Screen()
-screen.title("Задача с черепахой")
-screen.bgcolor("white")
+using namespace std;
 
-# Функция для рисования клетчатого фона
-def draw_grid(size, step):
-    penup()
-    for x in range(-size, size + 1, step):
-        goto(x, -size)
-        pendown()
-        goto(x, size)
-        penup()
-    for y in range(-size, size + 1, step):
-        goto(-size, y)
-        pendown()
-        goto(size, y)
-        penup()
-    goto(0, 0)  # Возвращаем черепаху в центр
+int main() {
+    string text = "123123123123123123123123123123123123123123123123123123123123123123123123123123"; // Исходный текст
 
-# Создание черепахи
-shape("turtle")
-color("blue")
-speed(1)  # Установите скорость черепахи (1 - медленно, 10 - быстро)
+    while (text.find("12") != string::npos || text.find("333") != string::npos) {
+        if (text.find("12") != string::npos) {
+            text.replace(text.find("12"), 2, "3"); // Заменяем "12" на "3"
+        } else {
+            text.replace(text.find("333"), 3, "3"); // Заменяем "333" на "3"
+        }
+    }
 
-# Функция для рисования квадрата
-def draw_square(size):
-    for _ in range(4):
-        forward(size)
-        right(90)
-
-# Функция для рисования круга
-def draw_circle(radius):
-    circle(radius)
-
-# Основная программа
-if __name__ == "__main__":
-    draw_grid(300, 20)  # Рисуем клетчатый фон размером 300 с шагом 20
-    draw_square(100)     # Рисуем квадрат со стороной 100
-    penup()
-    goto(150, 0)         # Перемещаем черепаху
-    pendown()
-    draw_circle(50)      # Рисуем круг с радиусом 50
-
-    # Завершение работы по клику
-    screen.exitonclick()
+    cout << "Результат: " << text << endl; // Выводим результат
+    return 0;
+}
