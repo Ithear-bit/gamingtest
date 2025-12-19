@@ -4,122 +4,124 @@
 #include <cstdlib>
 #include <ctime>
 #include <limits>
+// Добавлен #include <string> для использования std::string
+#include <string>
+using namespace std;
 #define Red "\033[0;31m"
 #define Green "\033[0;32m"
 #define white "\033[0;37m"
-using namespace std;
+#define blue "\033[0;34m"
+const string RESET = "\033[0m";
+const string YELLOW = "\033[33m";
+const string MAGENTA = "\033[35m";
+const string CYAN = "\033[36m";
+const string BOLD = "\033[1m";
+const string UNDERLINE = "\033[4m";
+
+// Функция возвращает float, поэтому она должна всегда возвращать значение
 float EZE(float& balanc) {
-    float poter, prixod;
-    short int start, end, cube, cube1, cube2, x;
-    prixod = 0.f;
-    poter = 0.f;
-    int seed = time(NULL);
-    srand(seed);
+    short int start, end, stavka, levl; // удален x, добавлена инициализация levl через ввод
+    // Размер массива увеличен до 5, чтобы можно было использовать индексы 0-4
+    int cube[4]; 
+    // Использование time(NULL) для инициализации один раз в main лучше, 
+    // но если нужно здесь, то так.
+    // srand() лучше вызывать один раз в main
+    // srand(time(NULL)); 
     start = 1;
     end = 6;
-    x = rand() % (end - start + 1) + start;
-    cube = rand() % (end - start + 1) + start;
-    cube1 = rand() % (end - start + 1) + start;
-    cube2 = rand() % (end - start + 1) + start;
-    cout << x << endl;
-    while (true) {
-        if (cin.fail())
-        {
-            cin.clear();
+    cout << "Pleas print your stavka: ";
+    cin >> stavka;
+    // Проверка на корректность ввода ставки
+    if (cin.fail() || stavka <= 0) {
+        cout << Red << "Invalid stavka. Returning to main loop." << RESET << endl;
+        cin.clear(); // Очистка флагов ошибок ввода
+        // Игнорирование оставшегося ввода до новой строки
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return balanc; // Возвращение текущего баланса без изменений
+    }
+
+    cout << Green << "=============================================" << white << endl; 
+    cout << Red << "pleas tap in your levl:" << white << endl;
+    cout << blue << "1 levl-its eze lvl" << white << endl;
+    cout << blue << "2 levl-its very hard lvl" << white << endl;
+    cout << CYAN << "3-help menu"<< RESET << endl;
+    cout << Green << "=============================================" << white << endl;
+
+    // Считывание уровня сложности
+    cin >> levl;
+    // Инициализация кубиков (используем индексы 0-4)
+    // Лучше использовать индексы 0-3 и diler_cube отдельно, но для сохранения структуры кода
+    cube[0] = rand() % (end - start + 1) + start; // player cube 1
+    cube[1] = rand() % (end - start + 1) + start; // player cube 2
+    cube[2] = rand() % (end - start + 1) + start; // player cube 3
+    cube[3] = rand() % (end - start + 1) + start; // diler cube (используем индекс 3 вместо 4)
+
+    // Вывод результатов (опционально, для отладки)
+    // cout << "Player: " << cube[0] << ", " << cube[1] << ", " << cube[2] << ". Dealer: " << cube[3] << endl;
+    
+    switch(levl){
+        case 1: 
+            // Правильное сравнение: (a==b || a==c || b==c)
+            // Условие победы не совсем ясно из оригинального кода, 
+            // я интерпретировал как совпадение хотя бы двух кубиков игрока с кубиком дилера
+            if((cube[0] == cube[3]) || (cube[1] == cube[3]) || (cube[2] == cube[3])){
+                cout << Green << "You won!" << RESET << endl;
+                balanc += stavka;
+            } else {
+                cout << Red << "You lose" << RESET << endl;
+                balanc -= stavka;
+            }
+            return balanc;
+            // break не нужен, т.к. есть return
+        
+        case 2: 
+            // Правильное сравнение: a==b && b==c && c==d
+            // Все кубики равны
+            if(cube[0] == cube[1] && cube[1] == cube[2] && cube[2] == cube[3]){
+                cout << Green << "You won!" << RESET << endl;
+                balanc += stavka * 3; // Как указано в меню помощи
+            } else {
+                cout << Red << "You lose." << RESET << endl;
+                balanc -= stavka;
+            }
+            return balanc;
+            // break не нужен, т.к. есть return
+
+        case 3: 
+            cout << YELLOW << "You choose the difficulty level: ";
+            cout << "1-is easy. It's the easiest to win, but there's no bet multiplier." << endl;
+            cout << "2-is harder to win, but the reward is worth it. The bet is tripled." << endl;
+            cout << CYAN << "Please click enter to return " << RESET << endl;
+            
+            // Исправление проблемы с cin.get(): игнорируем символ новой строки
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << Red << "Error: An invalid value has been entered. Please enter the number.";
-            cout << white << "." << endl;
-            cout << x << endl;
-            continue;
-        }
-        break;
-    }
-    cout << "the first cube: " << cube << " The second cube: " << cube1 << " The third cube: " << cube2 << endl;
-    if (x == cube or x == cube2 or x == cube1) {
-        cout << Green << "luck is on your side today." << white << endl;
-        prixod = balanc + 100;
-        cout << Green << "You've won:100" << white << endl;
-        balanc = prixod;
-        cout << "your current balance: " << balanc << endl;
-    }
-    else {
-        poter = balanc - 30;
-        cout << Red << "You lost: 30 coins" << white << endl;
-        balanc = poter;
-        cout << "your current balance: " << balanc << endl;
-    }
-    return balanc;
+            cin.get(); // Теперь он будет ждать нажатия Enter
+            return balanc; // Возвращаем баланс без изменений
+
+        default: 
+            cout << Red << "Error: An invalid value has been entered. Please enter the number." << white << endl;
+            return balanc; // Возвращаем баланс без изменений
+    }  
 }
-float HARD(float& balanc)
-{
-    float poter, prixod;
-    short int start, end, cube, cube1, cube2, x;
-    prixod = 0.f;
-    poter = 0.f;
-    int seed = time(NULL);
-    srand(seed);
-    start = 1;
-    end = 6;
-    x = rand() % (end - start + 1) + start;
-    cube = rand() % (end - start + 1) + start;
-    cube1 = rand() % (end - start + 1) + start;
-    cube2 = rand() % (end - start + 1) + start;
-    cout << x << endl;
-    while (true) {
-        if (cin.fail())
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << Red << "Error: An invalid value has been entered. Please enter the number.";
-            cout << white << "." << endl;
-            cout << x << endl;
-            continue;
-        }
-        break;
-    }
-    cout << Green << "luck is on your side today." << white << endl;
-    if (x == cube and x == cube1 or x == cube2 and x == cube1 or x == cube2 and x == cube1) {
-        cout << "the first cube: " << cube << " The second cube: " << cube1 << " The third cube: " << cube2 << endl;
-        prixod = balanc + 1000;
-        cout << Green << "You've won:1000" << white << endl;
-        balanc = prixod;
-        cout << "your current balance: " << balanc << endl;
-    }
-    else {
-        poter = balanc - 300;
-        cout << Red << "You lost: 300 coins" << white << endl;
-        balanc = poter;
-        cout << "your current balance: " << balanc << endl;
-    }
-    return balanc;
-}
+
 int main() {
+    // Инициализируем генератор случайных чисел один раз в начале программы
+    srand(time(NULL));
+
     float balanc = 0.1;
     cout << "Keep your balance: ";
     cin >> balanc;
+
+    // Игнорируем оставшийся ввод после ввода баланса
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     while (balanc > 0) {
-        cout << "1 - easy" << endl;
-        cout << "2 - hard drive" << endl;
-        int uroven;
-        cin >> uroven;
-        while (cin.fail()) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << Red << "Error: An invalid value has been entered. Please enter the number" << endl;
-            cout << white << "." << endl;
-            cin >> uroven;
-        }
-        if (uroven == 1) {
-            cout << "easy" << endl;
-            EZE(balanc);
-        }
-        else if (uroven == 2) {
-            cout << "hard drive" << endl;
-            HARD(balanc);
-        }
-        else {
-            cout << "There is no such level of difficulty, please keep the numbers that are indicated." << endl;
-        }
+        // Обновляем баланс значением, возвращаемым функцией
+        balanc = EZE(balanc);
+        cout << BOLD << "Your current balance is: " << balanc << RESET << endl;
     }
+
+    cout << Red << BOLD << "Game Over! Your balance is zero or less." << RESET << endl;
     return 0;
 }
+    
